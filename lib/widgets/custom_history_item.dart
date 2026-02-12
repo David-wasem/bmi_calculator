@@ -1,11 +1,11 @@
 import 'package:bmi_calculator/func/calc_bmi.dart';
+import 'package:bmi_calculator/model/BMI_model.dart';
 import 'package:flutter/material.dart';
 
 Widget customHistoryItem({
-  required Map<String, dynamic> item,
+  required BMIModel item,
   required int index,
 }) {
-  DateTime temp = item['date'];
   return Container(
     decoration: BoxDecoration(
       color: Colors.deepPurple[100],
@@ -16,24 +16,23 @@ Widget customHistoryItem({
     ),
     child: ListTile(
       leading: CircleAvatar(child: Text((index + 1).toString())),
-      title: Text("BMI : ${item['bmi']}"),
+      title: Text("BMI : ${item.bmi}"),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Date : ${temp.year}/${temp.month}/${temp.day}"),
+          Text("Date : ${item.date!.year}/${item.date!.month}/${item.date!.day}"),
           Text(
-            "Time : ${format24To12(temp.hour)}:${temp.minute}:${temp.second}",
+            "Time : ${format24To12(item.date!.hour)}:${item.date!.minute}:${item.date!.second}",
           ),
         ],
       ),
       trailing: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: getBMICategory(item['bmi']).values.first,
+          color: getBMICategory(item.bmi!).values.first,
           borderRadius: BorderRadius.circular(12),
         ),
-        // alignment: Alignment.center,
-        child: Text(getBMICategory(item['bmi']).keys.first),
+        child: Text(getBMICategory(item.bmi!).keys.first),
       ),
     ),
   );

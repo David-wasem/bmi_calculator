@@ -1,6 +1,8 @@
 import 'package:bmi_calculator/func/calc_bmi.dart';
 import 'package:bmi_calculator/func/pushing.dart';
+import 'package:bmi_calculator/model/BMI_model.dart';
 import 'package:bmi_calculator/ui/profile.dart';
+import 'package:bmi_calculator/widgets/plus_minus_button.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,14 +16,14 @@ class _HomePageState extends State<HomePage> {
   String? selectedGender;
   double? age;
   double? bmi;
-  final TextEditingController heightController = TextEditingController();
-  final TextEditingController weightController = TextEditingController();
+  int height = 180;
+  int weight = 70;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    heightController.dispose();
-    weightController.dispose();
+    height = 180;
+    weight = 70;
     super.dispose();
   }
 
@@ -187,7 +189,6 @@ class _HomePageState extends State<HomePage> {
                             color: const Color.fromARGB(255, 59, 59, 59),
                             size: 40,
                           ),
-                          SizedBox(height: 10),
                           Text(
                             "Height (cm)",
                             style: TextStyle(
@@ -196,37 +197,34 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter height";
-                              }
-                              final height = int.tryParse(value);
-                              if (height == null || height <= 0) {
-                                return "Height must be greater than 0";
-                              }
-                              return null;
-                            },
-                            controller: heightController,
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,
+                          Text(
+                            height.toString(),
                             style: TextStyle(
                               color: const Color.fromARGB(255, 59, 59, 59),
-                              fontSize: 32,
+                              fontSize: 45,
                               fontWeight: FontWeight.bold,
                             ),
-                            decoration: InputDecoration(
-                              hintText: "0",
-                              hintStyle: TextStyle(
-                                color: const Color.fromARGB(255, 59, 59, 59),
-                                fontSize: 32,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              PlusMinusButton(
+                                icon: Icons.add,
+                                onPressed: () {
+                                  setState(() {
+                                    height++;
+                                  });
+                                },
                               ),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
+                              PlusMinusButton(
+                                icon: Icons.remove,
+                                onPressed: () {
+                                  setState(() {
+                                    height--;
+                                  });
+                                },
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
@@ -247,7 +245,6 @@ class _HomePageState extends State<HomePage> {
                             color: const Color.fromARGB(255, 59, 59, 59),
                             size: 40,
                           ),
-                          SizedBox(height: 10),
                           Text(
                             "Weight (kg)",
                             style: TextStyle(
@@ -256,37 +253,34 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter weight";
-                              }
-                              final weight = int.tryParse(value);
-                              if (weight == null || weight <= 0) {
-                                return "Weight must be greater than 0";
-                              }
-                              return null;
-                            },
-                            controller: weightController,
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,
+                          Text(
+                            weight.toString(),
                             style: TextStyle(
                               color: const Color.fromARGB(255, 59, 59, 59),
-                              fontSize: 32,
+                              fontSize: 45,
                               fontWeight: FontWeight.bold,
                             ),
-                            decoration: InputDecoration(
-                              hintText: "0",
-                              hintStyle: TextStyle(
-                                color: const Color.fromARGB(255, 59, 59, 59),
-                                fontSize: 32,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              PlusMinusButton(
+                                icon: Icons.add,
+                                onPressed: () {
+                                  setState(() {
+                                    weight++;
+                                  });
+                                },
                               ),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
+                              PlusMinusButton(
+                                icon: Icons.remove,
+                                onPressed: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
@@ -306,18 +300,18 @@ class _HomePageState extends State<HomePage> {
                     );
                     ScaffoldMessenger.of(context).showSnackBar(sn);
                   } else {
-                    bmi = calcBMI(
-                      double.parse(heightController.text),
-                      double.parse(weightController.text),
-                    );
+                    bmi = calcBMI(height, weight);
                     setState(() {
                       ProfilePage.bmi = bmi;
                     });
-                    pushing({
-                      'bmi': bmi,
-                      'date': DateTime.now(),
-                      'gender': selectedGender!,
-                    });
+                    pushing(BMIModel(
+                      bmi: bmi,
+                      date: DateTime.now(),
+                      gender: selectedGender!,
+                      height: height,
+                      weight: weight,
+                      age: age?.round() ?? 18,
+                    ));
                     showDialog(
                       context: context,
                       builder: (context) {

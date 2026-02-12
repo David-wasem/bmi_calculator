@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-double calcBMI(double height, double weight) {
+double calcBMI(int height, int weight) {
   double heightInMeters = height / 100;
   double result = weight / (heightInMeters * heightInMeters);
   return double.parse(result.toStringAsFixed(2));
