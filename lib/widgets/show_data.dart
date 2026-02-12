@@ -19,15 +19,3 @@ Widget showData(String label, String value, IconData icon) {
     ),
   );
 }
-
-/**
- * TextField(
-      readOnly: true,
-      decoration: InputDecoration(
-        hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        labelText: label,
-        hintText: value,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    ),
- */

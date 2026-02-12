@@ -1,4 +1,4 @@
-import 'package:bmi_calculator/func/show_data.dart';
+import 'package:bmi_calculator/widgets/show_data.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {

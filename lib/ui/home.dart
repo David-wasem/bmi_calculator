@@ -1,4 +1,5 @@
 import 'package:bmi_calculator/func/calc_bmi.dart';
+import 'package:bmi_calculator/func/pushing.dart';
 import 'package:bmi_calculator/ui/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -311,6 +312,11 @@ class _HomePageState extends State<HomePage> {
                     );
                     setState(() {
                       ProfilePage.bmi = bmi;
+                    });
+                    pushing({
+                      'bmi': bmi,
+                      'date': DateTime.now(),
+                      'gender': selectedGender!,
                     });
                     showDialog(
                       context: context,
